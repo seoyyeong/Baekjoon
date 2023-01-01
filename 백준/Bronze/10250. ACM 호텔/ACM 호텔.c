@@ -1,15 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-int* arr;
 
-void init_room(int h, int w) {
+int find_room(int h, int w, int n) {
 
-    arr = (int*)malloc(sizeof(int) * (h * w));
     int a = 0;
     for (int i = 1; i <= w; i++) {
         for (int j = 100; j <= h * 100; j += 100) {
-            arr[a] = j + i;
+            if ((n - 1) == a) return j+i;
             a++;
         }
     }
@@ -25,8 +22,7 @@ int main(void) {
 
     for (int i = 0; i < t; i++) {
         scanf("%d %d %d", &h, &w, &n);
-        init_room(h, w);
-        printf("%d\n", arr[n-1]);
+        printf("%d\n", find_room(h, w, n));
     }
 
     return 0;
