@@ -7,16 +7,12 @@ int main(void) {
 
     while (1) {
         int t = i;
-        int s = 0, prev = 0;
-        while (t>0) {
-            prev = t % 10;
-            t /= 10;
-            if (prev == 6 && t % 10 == 6) s++;
-            if (prev == 6 && t % 10 != 6 && s <= 1) s = 0;
-            if (s >= 2) {
+        while (t > 0) {
+            if (t % 1000 == 666) {
                 cnt++;
                 break;
             }
+            t /= 10;
         }
         if (cnt == n) break;
         i++;
