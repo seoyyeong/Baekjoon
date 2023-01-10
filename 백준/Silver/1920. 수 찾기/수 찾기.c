@@ -22,7 +22,10 @@ int main(void) {
 		int flag = 0;
 		while (right >= left) {
 			mid = (left + right) / 2;
-			if (s == arr[mid]) flag = 1;
+			if (s == arr[mid]){
+                flag = 1;
+                break;
+            }
 			if (s < arr[mid]) right = mid - 1;
 			else left = mid + 1;
 		}
