@@ -21,21 +21,19 @@ int main(void) {
 		cnt = 0;
 		scanf("%d", &k);
 		if (prime[k] != 0) {
-			cnt = 1;
 			left = k - 1;
 			right = k + 1;
 			while (prime[left] != 0) {
 				left--;
-				cnt++;
 			}
 			while (prime[right] != 0) {
 				right++;
-				cnt++;
 			}
-			cnt++;
+			cnt = right - left;
 		}
 		printf("%d\n", cnt);
 	}
 
+	free(prime);
 	return 0;
 }
