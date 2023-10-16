@@ -5,19 +5,17 @@ using namespace std;
 int main(void)
 {
 	int cnt;
-	int num;
+	char str[101];
 	int ret = 0;
 
-	cin >> cnt;
+	cin >> cnt >> str;
 
-	getchar();
 	for (int i = 0; i < cnt; i++)
 	{
-		num = getchar();
-		ret += num - '0';
+		ret += str[i] - '0';
 	}
 
-	cout << ret << endl;
-    
-    return 0;
+	cout << ret;
+
+	return 0;
 }
