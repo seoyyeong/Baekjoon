@@ -5,7 +5,6 @@
 using namespace std;
 typedef pair<int, int> p;
 vector<p> v;
-int arr[500000];
 
 int main(void)
 {
@@ -15,12 +14,13 @@ int main(void)
 	vector<p>::iterator iter;
 	scanf("%d", &n);
 
+
 	for (int i = 0; i < n; i++)
 	{
-		scanf("%d", &arr[i]);
-		temp.first = arr[i];
+		scanf("%d", &temp.first);
 		temp.second = i;
 		v.push_back(temp);
+		
 	}
 
 	stable_sort(v.begin(), v.end());
