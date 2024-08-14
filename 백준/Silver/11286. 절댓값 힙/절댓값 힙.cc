@@ -1,49 +1,56 @@
-
 #include <iostream>
-#include <vector>
-#include <cmath>
 #include <queue>
+#include <math.h>
 
 using namespace std;
-typedef pair<int, int> p;
-priority_queue<p, vector<p>, greater<p>> pq;
 
-
-void func(p n)
+struct cmp
 {
-	if (n.second == 0)
-	{
-		if (pq.size() == 0)
-		{
-			printf("0\n");
+    bool operator()(int a, int b)
+    {
+        if (abs(a) == abs(b))
+        {
+            return a > b;
+        }
+        return abs(a) > abs(b);
+        
+    }
+};
 
-		}
-		else
-		{
-			printf("%d\n", pq.top().second);
-			pq.pop();
-		}
-	}
-	else
-	{
-		pq.push(n);
-	}
 
-}
+priority_queue<int, vector<int>, cmp> pq;
 
 int main(void)
 {
-	int n;
-	int temp;
+    int n;
 
-	scanf("%d", &n);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 0; i < n; i++)
-	{
-		scanf("%d", &temp);
-		func({ abs(temp), temp});
+    cin >> n;
 
-	}
+    for (int i = 0; i < n; i++)
+    {
+        int temp;
+        cin >> temp;
+        if (temp == 0)
+        {
+            if (pq.empty())
+            {
+                cout << 0 << '\n';
+            }
+            else
+            {
+                cout << pq.top() << '\n';
+                pq.pop();
+            }
+        }
+        else
+        {
+            pq.push(temp);
+        }
+    }
 
-	return 0;
+    return 0;
 }
