@@ -1,36 +1,46 @@
 #include <iostream>
 
+using namespace std;
+
 long long arr[1000001];
-long long cnt[10001];
+long long mod[1000];
 
 int main(void)
 {
-	int n;
-	int m;
-	int temp;
-	int mod;
-	long long ans = 0;
+    long long n;
+    long long m;
+    long long cnt = 0;
 
-	scanf("%d %d", &n, &m);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 1; i <= n; i++)
-	{
-		scanf("%d", &temp);
-		arr[i] = arr[i - 1] + temp;
-		mod = arr[i] % m;
-		cnt[mod]++;
-	}
+    cin >> n >> m;
 
-	ans = cnt[0];
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> arr[i];
+        arr[i] += arr[i - 1];
+    }
 
-	for (int i = 0; i < m; i++)
-	{
-		if (cnt[i] > 0)
-		{
-			ans += cnt[i] * (cnt[i] - 1) / 2;
-		}
-	}
-	printf("%lld\n", ans);
+    for (int i = 1; i <= n; i++)
+    {
+        arr[i] %= m;
+        if (arr[i] == 0)
+        {
+            cnt++;
+        }
+        mod[arr[i]]++;
+    }
 
-	return 0;
+    for (int i = 0; i < m; i++)
+    {
+        if (mod[i] > 1)
+        {
+            cnt += mod[i] * (mod[i] - 1) / 2;
+        }
+    }
+    cout << cnt << '\n';
+
+    return 0;
 }
