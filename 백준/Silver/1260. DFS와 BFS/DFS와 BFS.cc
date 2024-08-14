@@ -1,86 +1,96 @@
 #include <iostream>
-#include <queue>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
-#define MAX 1001
 
+vector<vector<int>> vt;
 queue<int> q;
-bool arr[MAX][MAX];
-bool visited_DFS[1001];
-bool visited_BFS[1001];
-int n;
+bool checked[1001];
 
-void DFS(int idx);
-void BFS(void);
+void DFS(int num);
+void BFS(int num);
 
 int main(void)
 {
-	int m;
-	int v;
-	int a;
-	int b;
-	scanf("%d %d %d", &n, &m, &v);
+    int n;
+    int m;
+    int v;
+    
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for(int i = 0; i < m; i++)
-	{
-		scanf("%d %d", &a, &b);
-		arr[a][b] = true;
-		arr[b][a] = true;
-	}
+    cin >> n >> m >> v;
+    vt.resize(n + 1);
 
+    for (int i = 1; i <= n; i++)
+    {
+        vector<int> temp;
+        vt.push_back(temp);
+    }
+    for (int i = 0; i < m; i++)
+    {
+        int a;
+        int b;
+        cin >> a >> b;
+        vt[a].push_back(b);
+        vt[b].push_back(a);
+    }
 
-	DFS(v);
-	printf("\n");
-	q.push(v);
-	BFS();
+    for (int i = 1; i <= n; i++)
+    {
+        sort(vt[i].begin(), vt[i].end());
+    }
 
+    DFS(v);
+    cout << '\n';
 
-	return 0;
+    for (int i = 0; i <= n; i++)
+    {
+        checked[i] = false;
+    }
+    BFS(v);
+    cout << '\n';
+
+    return 0;
+}
+
+void DFS(int num)
+{
+    if (checked[num] == true)
+    {
+        return;
+    }
+    checked[num] = true;
+    cout << num << ' ';
+
+    for (int i = 0; i < vt[num].size(); i++)
+    {
+        DFS(vt[num][i]);
+    }
 
 }
 
-void DFS(int idx)
+void BFS(int num)
 {
-	if (visited_DFS[idx] == true)
-		return;
+    q.push(num);
 
-	visited_DFS[idx] = true;
-	printf("%d ", idx);
+    while (!q.empty())
+    {
+        int temp = q.front();
+        q.pop();
 
-	for (int i = 1; i <= n; i++)
-	{
-		if (visited_DFS[i] == false && arr[idx][i] == true)
-			DFS(i);
-	}
+        if (checked[temp] == false)
+        {
+            checked[temp] = true;
+            cout << temp << ' ';
 
-	return;
-}
-
-void BFS(void)
-{
-	int v;
-	while (q.size() > 0)
-	{
-		v = q.front();
-		q.pop();
-
-		if (visited_BFS[v] == false)
-		{
-			visited_BFS[v] = true;
-			printf("%d ", v);
-
-			for (int i = 1; i <= n; i++)
-			{
-				if (visited_BFS[i] == false && arr[v][i] == true)
-				{
-					q.push(i);
-				}
-			}
-		}
-
-	}
-
-	return;
-
+            for (int i = 0; i < vt[temp].size(); i++)
+            {
+                q.push(vt[temp][i]);
+            }
+        }
+    }
 }
