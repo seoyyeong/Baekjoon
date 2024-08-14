@@ -1,31 +1,38 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 
-int arr[100001];
+
+using namespace std;
+
+int v[100001];
 
 int main(void)
 {
-	int n;
-	int m;
-	int i;
-	int j;
-	int num;
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	scanf("%d %d", &n, &m);
+    int n;
+    int m;
+    int temp;
 
-	for (int cnt = 1; cnt <= n; cnt++)
-	{
-		scanf("%d", &num);
-		arr[cnt] = arr[cnt - 1] + num;
-		
-	}
+    cin >> n >> m;
+    v[0] = 0;
 
-	for (int cnt = 0; cnt < m; cnt++)
-	{
-		scanf("%d %d",&i, &j);
-		printf("%d\n", arr[j] - arr[i - 1]);
-	}
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i + 1];
+        v[i + 1] += v[i];
+    }
 
-	return 0;
+    for (int i = 0; i < m; i++)
+    {
+        int start;
+        int end;
+
+        cin >> start >> end;
+
+        cout << v[end] - v[start - 1] << '\n';
+    }
+
+    return 0;
 }
