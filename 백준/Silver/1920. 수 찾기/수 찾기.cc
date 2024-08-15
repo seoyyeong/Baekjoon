@@ -4,69 +4,68 @@
 
 using namespace std;
 
-vector<int> vn;
-vector<int> vm;
-int n, m;
+int n;
+int m;
+vector<int> v;
 
-int Search(int num);
+int search(int num);
 
 int main(void)
 {
-	int temp;
 
-	scanf("%d", &n);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 0; i < n; i++)
-	{
-		scanf("%d", &temp);
-		vn.push_back(temp);
-	}
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int temp;
+        cin >> temp;
+        v.push_back(temp);
+    }
 
-	scanf("%d", &m);
+    sort(v.begin(), v.end());
 
-	for (int i = 0; i < m; i++)
-	{
-		scanf("%d", &temp);
-		vm.push_back(temp);
-	}
-
-	sort(vn.begin(), vn.end());
-	
-	for (int i = 0; i < m; i++)
-	{
-		printf("%d\n", Search(vm[i]));
-	}
+    cin >> m;
+    for (int i = 0; i < m; i++)
+    {
+        int temp;
+        cin >> temp;
+        cout << search(temp) << '\n';
+    }
 
 
-	return 0;
+    return 0;
 }
 
-int Search(int num)
+int search(int num)
 {
-	int left;
-	int mid;
-	int right;
+    int mid;
+    int left = 0;
+    int right = n - 1;
 
-	left = 0;
-	right = n - 1;
+    while (1)
+    {
+        mid = (left + right) / 2;
+        if (left > mid || right < mid)
+        {
+            return 0;
+        }
 
-	while (right >= left)
-	{
-		mid = (right + left) / 2;
+        if (v[mid] == num)
+        {
+            return 1;
+        }
+        if (v[mid] > num)
+        {
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
 
-		if (vn[mid] == num)
-			return 1;
+    }
 
-		if (vn[mid] < num)
-		{
-			left = mid + 1;
-		}
-
-		if (vn[mid] > num)
-		{
-			right = mid - 1;
-		}
-	}
-
-	return 0;
 }
