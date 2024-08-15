@@ -3,50 +3,38 @@
 #include <algorithm>
 
 using namespace std;
+
 typedef pair<int, int> P;
-
-int cmp(P& a, P& b)
-{
-
-	if (a.second == b.second)
-	{
-		return a.first < b.first;
-	}
-
-	return a.second < b.second;
-}
 
 int main(void)
 {
-	vector<P> v;
+    int n;
+    int cnt = 0;
+    int time = -1;
+    vector<P> v;
 
-	int n;
-	P prev;
-	int cnt = 1;
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	scanf("%d", &n);
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int a;
+        int b;
+        cin >> a >> b;
+        v.push_back({ b,a });
+    }
 
-	v.resize(n);
+    sort(v.begin(), v.end());
 
-	for (int i = 0; i < n; i++)
-	{
-		scanf("%d %d", &v[i].first, &v[i].second);
-	}
-
-	sort(v.begin(), v.end(), cmp);
-
-	prev = v[0];
-
-	for (int i = 1; i < n; i++)
-	{
-		if (prev.second <= v[i].first)
-		{
-			cnt++;
-			prev = v[i];
-		}
-	}
-
-	printf("%d", cnt);
-
-	return 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (v[i].second >= time)
+        {
+            time = v[i].first;
+            cnt++;
+        }
+    }
+    cout << cnt;
 }
