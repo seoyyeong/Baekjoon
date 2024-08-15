@@ -1,74 +1,91 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+
 using namespace std;
 
-
-vector<vector<int>> graph;
+vector<vector<int>> v;
+vector<bool> checked;
+vector<int> cnt;
 queue<int> q;
-vector<int> ans;
-vector<bool> visited;
-int n;
-int m;
-int depth;
 
-void BFS(int n);
+void BFS(int num);
 
 int main(void)
 {
-	int temp1;
-	int temp2;
+    int n;
+    int m;
 
-	scanf("%d %d", &n, &m);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	graph.resize(n + 1);
-	visited.resize(n + 1);
-	ans.resize(n + 1);
+    cin >> n >> m;
 
-	for (int i = 0; i < m; i++)
-	{
-		scanf("%d %d", &temp1, &temp2);
-		graph[temp1].push_back(temp2);
-	}
+    checked.resize(n + 1);
+    cnt.resize(n + 1);
+    for (int i = 0; i <= n; i++)
+    {
+        vector<int> temp;
+        v.push_back(temp);
+        cnt[i] = 0;
+    }
 
-	for (int i = 1; i <= n; i++)
-	{
-		visited.assign(visited.size(), 0);
-		BFS(i);
-	}
+    for (int i = 0; i < m; i++)
+    {
+        int a;
+        int b;
+        cin >> a >> b;
 
-	for (int i = 1; i <= n; i++)
-	{
-		if (depth < ans[i])
-			depth = ans[i];
-	}
+        v[b].push_back(a);
+    }
 
-	for (int i = 1; i <= n; i++)
-	{
-		if (ans[i] == depth)
-			printf("%d ", i);
-	}
+    for (int i = 1; i <= n; i++)
+    {
+        fill(checked.begin(), checked.end(), false);
+        BFS(i);
+    }
 
-	return 0;
+    int max = 0;
+    int ans = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        if (cnt[i] > max)
+        {
+            max = cnt[i];
+            ans = i;
+        }
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        if (cnt[i] == max)
+        {
+            cout << i << ' ';
+        }
+    }
+    return 0;
 }
 
-void BFS(int n)
+void BFS(int num)
 {
-	q.push(n);
-	visited[n] = true;
-	while (q.size() > 0)
-	{
-		int cur = q.front();
-		q.pop();
-		for (int i = 0; i < graph[cur].size(); i++)
-		{
-			if (visited[graph[cur][i]] == false)
-			{
-				visited[graph[cur][i]] = true;
-				ans[graph[cur][i]]++;
-				q.push(graph[cur][i]);
-			}
-		}
+    int node;
+    q.push(num);
+    checked[num] = true;
 
-	}
+    while (!q.empty())
+    {
+        node = q.front();
+        q.pop();
+        for (int i = 0; i < v[node].size(); i++)
+        {
+            int temp = v[node][i];
+            if (checked[temp] == false)
+            {
+                checked[temp] = true;
+                q.push(temp);
+                cnt[num]++;
+            }
+        }
+    }
 }
