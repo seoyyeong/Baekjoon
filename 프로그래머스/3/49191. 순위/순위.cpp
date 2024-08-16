@@ -1,60 +1,66 @@
 #include <string>
 #include <vector>
-#include <iostream>
-#define INF 1'000'000'000
+#include <queue>
 
 using namespace std;
 
+int tsort(int n, vector<vector<int>>& list);
+
 int solution(int n, vector<vector<int>> results) {
     int answer = 0;
-    int arr[101][101];
-    
-    for(int i=1;i<=n;i++)
-    {
-        for(int j=1;j<=n;j++)
-        {
-            arr[i][j] = INF;
-        }
-    }
-    
-    for(int i=0;i<results.size();i++)
-    {
-        arr[results[i][0]][results[i][1]] = 1;
-    }
-    
-    for(int k=1;k<=n;k++)
-    {
-        for(int i=1;i<=n;i++)
-        {
-            for(int j=1;j<=n;j++)
-            {
-                arr[i][j] = min(arr[i][j],arr[i][k]+arr[k][j]);
-            }
-        }
-    }
-    
-    bool bFlag;
-    
-    for(int i=1;i<=n;i++)
-    {
-        bFlag = true;
-        for(int j=1;j<=n;j++)
-        {  
-            if(i!=j)
-            {
-                if(arr[i][j]==INF&&arr[j][i]==INF)
-                {
-                    bFlag=false;
-                    break;
-                }
-            }
 
-        }
-        if(bFlag==true)
+    vector<vector<int>> list;
+
+    list.resize(n + 1);
+    for (int i = 0; i <= n; i++)
+    {
+        vector<int> temp;
+        list.push_back(temp);
+    }
+
+    for (int i = 0; i < results.size(); i++)
+    {
+        list[results[i][0]].push_back(results[i][1]);
+    }
+
+    answer = tsort(n, list);
+
+    return answer;
+}
+
+int tsort(int n, vector<vector<int>>& list)
+{
+    vector<int> degree;
+    queue<int> q;
+    vector<int> ans;
+    //int ans = 0;
+
+    degree.resize(n + 1);
+
+    for (int i = 1; i <= n; i++)
+    {
+        degree[i] = list[i].size();
+        if (degree[i] == 0)
         {
-            answer++;
+            q.push(i);
         }
     }
-    
-    return answer;
+
+    while (!q.empty())
+    {
+        int temp = q.front();
+        q.pop();
+        ans.push_back(temp);
+
+        for (int i = 0; i < list[temp].size(); i++)
+        {
+            degree[list[temp][i]]--;
+            if (degree[list[temp][i]] == 0)
+            {
+                q.push(list[temp][i]);
+            }
+        }
+    }
+
+    return ans.size();
 }
