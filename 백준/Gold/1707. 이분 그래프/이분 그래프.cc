@@ -2,87 +2,91 @@
 #include <vector>
 #include <memory.h>
 
-#define MAX_SIZE 20'001
 using namespace std;
 
-vector<vector<int>> graph;
-vector<bool> visited;
-vector<char> check;
-int k;
-int v;
-int e;
+
 bool ans;
-
-void DFS(int n);
-
+char checked[20001];
+char visited[20001];
+void DFS(int num, vector<vector<int>>& vec);
 
 int main(void)
 {
-	int temp1;
-	int temp2;
+    int k;
 
-	scanf("%d", &k);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 0; i < k; i++)
-	{
-		ans = true;
+    cin >> k;
 
-		scanf("%d %d", &v, &e);
-		graph.resize(v + 1);
-		visited.resize(v + 1);
-		check.resize(v + 1);
+    for (int i = 0; i < k; i++)
+    {
+        vector<vector<int>> vec;
+        int v;
+        int e;
 
-		for (int j = 0; j < e; j++)
-		{
-			scanf("%d %d", &temp1, &temp2);
-			graph[temp1].push_back(temp2);
-			graph[temp2].push_back(temp1);
-		}
+        ans = true;
+        memset(checked, 0, 20001);
+        memset(visited, 0, 20001);
 
-		for (int j = 1; j <= v; j++)
-		{
-			if (ans == false)
-				break;
+        cin >> v >> e;
 
-			DFS(j);
-		}
+        for (int j = 0; j <= v; j++)
+        {
+            vector<int> temp;
+            vec.push_back(temp);
+        }
 
-		if (ans == true)
-			printf("YES\n");
-		else
-			printf("NO\n");
+        for (int j = 0; j < e; j++)
+        {
+            int a;
+            int b;
+            cin >> a >> b;
 
-		for (int i = 0; i <= v; i++)
-		{
-			graph[i].clear();
-		}
-		visited.clear();
-		check.clear();
+            vec[a].push_back(b);
+            vec[b].push_back(a);
 
-	}
+        }
+        for (int i = 1; i <= v; i++)
+        {
+            DFS(i, vec);
+        }
 
+        if (ans == true)
+        {
+            cout << "YES\n";
+        }
+        else
+        {
+            cout << "NO\n";
+        }
+    }
 
-
-	return 0;
+    return 0;
 }
 
-
-void DFS(int n)
+void DFS(int num, vector<vector<int>>& vec)
 {
-	visited[n] = true;
 
-	for (int i = 0; i < graph[n].size(); i++)
-	{
-		if (visited[graph[n][i]] == false)
-		{
-			check[graph[n][i]] = (check[n] + 1) % 2;
+    visited[num] = true;
 
-			DFS(graph[n][i]);
-		}
-		else
-		{
-			if (check[graph[n][i]] == check[n])
-				ans = false;
-		}
-	}
+    for (int i = 0; i < vec[num].size(); i++)
+    {
+        if (visited[vec[num][i]]==false)
+        {
+            checked[vec[num][i]] = (checked[num] + 1) % 2;
+            DFS(vec[num][i], vec);
+        }
+        else
+        {
+            if (checked[vec[num][i]] == checked[num])
+            {
+                ans = false;
+            }
+        }
+
+
+    }
+
 }
