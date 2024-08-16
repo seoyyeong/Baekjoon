@@ -1,79 +1,99 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <vector>
+#include <climits>
 
-#define MAX 10'000'000
 using namespace std;
 
 typedef pair<int, int> P;
-vector<vector<P>> Node;
-vector<int> dist;
+vector<vector<P>> vec;
 priority_queue<P, vector<P>, greater<P>> q;
+bool checked[20001];
+int depth[20001];
+int v;
+int e;
+int k;
+
+void BFS(int num);
 
 int main(void)
 {
-	int v;
-	int e;
-	int k;
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	scanf("%d %d %d", &v, &e, &k);
-	Node.resize(v + 1);
-	dist.resize(v + 1);
+    int e;
 
-	for (int i = 1; i <= v; i++)
-	{
-		dist[i] = MAX + 1;
-	}
-	dist[k] = 0;
+    cin >> v >> e >> k;
 
-	for (int i = 0; i < e; i++)
-	{
-		int u;
-		P p;
-		scanf("%d %d %d", &u, &p.second, &p.first);
-		Node[u].push_back(p);
-	}
+    vec.resize(v + 1);
+    for (int i = 0; i <= v; i++)
+    {
+        vector<P> temp;
+        vec.push_back(temp);
+        depth[i] = INT_MAX;
+    }
 
-	q.push({ 0,k });
+    depth[k] = 0;
 
-	while (q.size() > 0)
-	{
-		int curIdx = q.top().second;
-		int curdist = q.top().first;
-		q.pop();
-		
-		if (dist[curIdx] < curdist)
-		{
-			continue;
-		}
+    for (int i = 0; i < e; i++)
+    {
+        int a;
+        int b;
+        int c;
 
-		for (int i = 0; i < Node[curIdx].size(); i++)
-		{
-			int nextIdx = Node[curIdx][i].second;
-			int nextDist = curdist + Node[curIdx][i].first;
+        cin >> a >> b >> c;
 
-			if (dist[nextIdx] > nextDist)
-			{
-				dist[nextIdx] = nextDist;
-				q.push({ nextDist, nextIdx });
-			}
+        vec[a].push_back({ b,c });
+    }
 
-		}
+    BFS(k);
+
+    for (int i = 1; i <= v; i++)
+    {
+        if (checked[i]==false)
+        {
+            cout << "INF" << '\n';
+        }
+        else
+        {
+            cout << depth[i] << '\n';
+        }
+    }
+    return 0;
+}
+
+void BFS(int num)
+{
+    P node;
+    int idx;
+    q.push({ 0, num });
+
+    while (!q.empty())
+    {
+        node = q.top();
+        idx = node.second;
+        q.pop();
+
+        if (checked[idx] == true)
+        {
+            continue;
+        }
+        checked[idx] = true;
+
+        for (int i = 0; i < vec[idx].size(); i++)
+        {
+            int next = vec[idx][i].first;
+            int dist = vec[idx][i].second;
+
+            if (depth[next] > depth[idx] + dist)
+            {
+                depth[next] = depth[idx] + dist;
+                q.push({ depth[next], next });
+            }
+
+        }
 
 
-	}
-
-	for (int i = 1; i <= v; i++)
-	{
-		if (dist[i] <= MAX)
-		{
-			printf("%d\n", dist[i]);
-		}
-		else
-		{
-			printf("INF\n");
-		}
-	}
-
-	return 0;
+    }
 }
