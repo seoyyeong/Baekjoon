@@ -1,65 +1,89 @@
 #include <iostream>
-#include <vector>
 
-int arr[1'000'001];
+using namespace std;
 
-void Union(int a, int b);
-int Find(int a);
+int uf[1000001];
 
+void unionfunc(int a, int b);
+int findfunc(int a);
+bool check(int a, int b);
 
 int main(void)
 {
-	int n;
-	int m;
-	int t;
-	int a;
-	int b;
+    int n;
+    int m;
 
-	scanf("%d %d", &n, &m);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 0; i <= n; i++)
-	{
-		arr[i] = i;
-	}
+    cin >> n >> m;
+    for (int i = 0; i <= n; i++)
+    {
+        uf[i] = i;
+    }
 
-	for (int i = 0; i < m; i++)
-	{
-		scanf("%d %d %d", &t, &a, &b);
-		if (t == 0)
-		{
-			Union(a, b);
-		}
-		else
-		{
-			a = Find(a);
-			b = Find(b);
-			if (a == b)
-				printf("YES\n");
-			else
-				printf("NO\n");
-		}
+    for (int i = 0; i < m; i++)
+    {
+        int type;
+        int a;
+        int b;
+        cin >> type >> a >> b;
 
-	}
+        if (type == 0)
+        {
+            unionfunc(a, b);
+        }
+        else
+        {
+            if (check(a, b))
+            {
+                cout << "YES" <<'\n';
+            }
+            else
+            {
+                cout << "NO" << '\n';
+            }
+        }
+    }
 
-	return 0;
+
+
+    return 0;
 }
 
-void Union(int a, int b)
+void unionfunc(int a, int b)
 {
-	a = Find(a);
-	b = Find(b);
+    a = findfunc(a);
+    b = findfunc(b);
 
-	if (a != b)
-	{
-		arr[b] = a;
-	}
-
+    if (a != b)
+    {
+        uf[b] = a;
+    }
 }
 
-int Find(int a)
+int findfunc(int a)
 {
-	if (a == arr[a])
-		return a;
-	else
-		return arr[a] = Find(arr[a]);
+    if (uf[a] != a)
+    {
+        return uf[a] = findfunc(uf[a]);
+    }
+
+    else
+    {
+        return a;
+    }
+}
+
+bool check(int a, int b)
+{
+    a = findfunc(a);
+    b = findfunc(b);
+
+    if (a != b)
+    {
+        return false;
+    }
+    return true;
 }
