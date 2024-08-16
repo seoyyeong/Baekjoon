@@ -3,77 +3,71 @@
 
 using namespace std;
 
-int arr[201][201];
-int UnionArr[201];
-int City[1001];
+int arr[200][200];
+bool visited[200];
+int n;
+int m;
+vector<int> v;
 
-void Union(int a, int b);
-int Find(int a);
+void DFS(int num);
+
 
 int main(void)
 {
-	int n;
-	int m;
-	int f;
 
-	scanf("%d %d", &n, &m);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	for (int i = 1; i <= n; i++)
-	{
-		UnionArr[i] = i;
-		for (int j = 1; j <= n; j++)
-		{
-			scanf("%d", &arr[i][j]);
-		}
-	}
+    cin >> n >> m;
 
-	for (int i = 1; i <= m; i++)
-	{
-		scanf("%d", &City[i]);
-	}
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> arr[i][j];
+        }
+        arr[i][i] = 1;
+    }
 
-	for (int i = 1; i <= n; i++)
-	{
-		for (int j = 1; j <= n; j++)
-		{
-			if (arr[i][j] == 1)
-			{
-				Union(i, j);
-			}
-		}
-	}
+    for (int i = 0; i < m; i++)
+    {
+        int temp;
+        cin >> temp;
+        v.push_back(temp);
+    }
 
-	f = Find(City[1]);
+    DFS(v[0] - 1);
 
-	for (int i = 2; i <= m; i++)
-	{
-		if (f != Find(City[i]))
-		{
-			printf("NO");
-			return 0;
-		}
-	}
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (visited[v[i] - 1] == false)
+        {
+            cout << "NO" << '\n';
+            return 0;
+        }
+    }
+    cout << "YES" << '\n';
 
-	printf("YES");
-	return 0;
+    return 0;
 }
 
-void Union(int a, int b)
+void DFS(int num)
 {
-	a = Find(a);
-	b = Find(b);
+    if (visited[num] == true)
+    {
+        return;
+    }
 
-	if (a != b)
-	{
-		UnionArr[b] = a;
-	}
+    visited[num] = true;
 
-}
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[num][i] == 1)
+        {
+            DFS(i);
+        }
+    }
 
-int Find(int a)
-{
-	if (a == UnionArr[a])
-		return a;
 
-	return UnionArr[a] = Find(UnionArr[a]);
 }
